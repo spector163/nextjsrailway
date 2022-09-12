@@ -5,7 +5,11 @@ import { createTodo, deleteTodo, toggleTodo, useTodos } from "../api";
 import styles from "../styles/Home.module.css";
 import { Todo } from "../types";
 
-export const TodoList: React.FC = ({ todos }) => {
+export const TodoList: React.FC = () => {
+  const { data: todos, error } = useTodos();
+
+  if (error != null) return <div>Error loading todos...</div>;
+  if (todos == null) return <div>Loading...</div>;
 
   if (todos.length === 0) {
     return <div className={styles.emptyState}>Try adding a todo ☝️️</div>;
@@ -89,11 +93,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-export const getStaticProps = async () => {
-  const { data: todos, error } = useTodos();
-  return {
-    props: todos
-  }
-
-
-}
